@@ -30,7 +30,9 @@ class Property {
   final List<String> imageUrls;
   final Map<String, String> portalLinks; // {"Sahibinden": "url", "Hepsiemlak": "url"}
   final DateTime createdAt;
-  final List<String> features; // Balcony, Pool, Elevator, Parking, Sea View, etc.
+  final List<String> features;
+  final String agentId;
+  final String agentName;
 
   Property({
     required this.id,
@@ -57,6 +59,8 @@ class Property {
     this.portalLinks = const {},
     required this.createdAt,
     this.features = const [],
+    this.agentId = 'admin-id',
+    this.agentName = 'Admin Yönetici',
   });
 
   String get typeName {
@@ -117,6 +121,8 @@ class Property {
       'portalLinks': portalLinks,
       'createdAt': createdAt.toIso8601String(),
       'features': features,
+      'agentId': agentId,
+      'agentName': agentName,
     };
   }
 
@@ -146,6 +152,8 @@ class Property {
       portalLinks: Map<String, String>.from(map['portalLinks'] ?? {}),
       createdAt: DateTime.parse(map['createdAt']),
       features: List<String>.from(map['features'] ?? []),
+      agentId: map['agentId'] ?? 'admin-id',
+      agentName: map['agentName'] ?? 'Admin Yönetici',
     );
   }
 

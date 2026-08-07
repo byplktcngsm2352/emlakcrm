@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 import '../../models/property.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/crm_provider.dart';
 import '../../theme/app_theme.dart';
 
@@ -345,6 +346,9 @@ class _PropertyFormViewState extends State<PropertyFormView> {
         portalLinks['Sahibinden'] = _sahibindenUrl;
       }
 
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      final currentUser = auth.currentUser;
+
       final property = Property(
         id: widget.property?.id ?? const Uuid().v4(),
         title: _title,
@@ -370,12 +374,16 @@ class _PropertyFormViewState extends State<PropertyFormView> {
         portalLinks: portalLinks,
         createdAt: widget.property?.createdAt ?? DateTime.now(),
         features: _features,
+        agentId: widget.property?.agentId ?? (currentUser?.id ?? 'admin-id'),
+        agentName: widget.property?.agentName ?? (currentUser?.fullName ?? 'Admin Yönetici'),
       );
 
       if (widget.property != null) {
         provider.updateProperty(property);
+        auth.logAction('Portföy Güncellendi', details: '${property.title} - ${_price.toInt()} $_currency');
       } else {
         provider.addProperty(property);
+        auth.logAction('Yeni Portföy Eklendi', details: '${property.title} - ${_price.toInt()} $_currency');
       }
 
       Navigator.pop(context);

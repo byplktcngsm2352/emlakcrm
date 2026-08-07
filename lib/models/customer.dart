@@ -22,6 +22,8 @@ class Customer {
   final String notes;
   final DateTime createdAt;
   final CustomerCriteria criteria;
+  final String agentId;
+  final String agentName;
 
   Customer({
     required this.id,
@@ -33,6 +35,8 @@ class Customer {
     this.notes = '',
     required this.createdAt,
     required this.criteria,
+    this.agentId = 'admin-id',
+    this.agentName = 'Admin Yönetici',
   });
 
   String get typeName {
@@ -76,6 +80,8 @@ class Customer {
       'notes': notes,
       'createdAt': createdAt.toIso8601String(),
       'criteria': criteria.toMap(),
+      'agentId': agentId,
+      'agentName': agentName,
     };
   }
 
@@ -90,6 +96,8 @@ class Customer {
       notes: map['notes'] ?? '',
       createdAt: DateTime.parse(map['createdAt']),
       criteria: CustomerCriteria.fromMap(map['criteria'] ?? {}),
+      agentId: map['agentId'] ?? 'admin-id',
+      agentName: map['agentName'] ?? 'Admin Yönetici',
     );
   }
 
@@ -105,6 +113,8 @@ class Customer {
     LeadStage? stage,
     String? notes,
     CustomerCriteria? criteria,
+    String? agentId,
+    String? agentName,
   }) {
     return Customer(
       id: id,
@@ -116,6 +126,8 @@ class Customer {
       notes: notes ?? this.notes,
       createdAt: createdAt,
       criteria: criteria ?? this.criteria,
+      agentId: agentId ?? this.agentId,
+      agentName: agentName ?? this.agentName,
     );
   }
 }

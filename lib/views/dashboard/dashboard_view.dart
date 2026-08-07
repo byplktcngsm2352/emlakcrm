@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:fl_chart/fl_chart.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/crm_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../utils/formatters.dart';
@@ -152,6 +153,9 @@ class DashboardView extends StatelessWidget {
   }
 
   Widget _buildWelcomeBanner(BuildContext context) {
+    final auth = Provider.of<AuthProvider>(context);
+    final user = auth.currentUser;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -177,30 +181,30 @@ class DashboardView extends StatelessWidget {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Hoş Geldiniz, Danışman',
-                    style: TextStyle(color: Colors.white70, fontSize: 13),
+                    'Hoş Geldiniz, ${user?.fullName ?? "Danışman"}',
+                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
                   Text(
-                    'Lüks Portföy Yönetimi',
-                    style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
+                    '${user?.roleName} • ${user?.title}',
+                    style: const TextStyle(color: Colors.white70, fontSize: 12),
                   ),
                 ],
               ),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                 decoration: BoxDecoration(
-                  color: AppTheme.goldAccent.withOpacity(0.2),
+                  color: AppTheme.goldAccent.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: AppTheme.goldAccent),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.star, color: AppTheme.goldAccent, size: 14),
-                    SizedBox(width: 4),
-                    Text('VIP CRM', style: TextStyle(color: AppTheme.goldLight, fontWeight: FontWeight.bold, fontSize: 12)),
+                    const Icon(Icons.star, color: AppTheme.goldAccent, size: 14),
+                    const SizedBox(width: 4),
+                    Text(auth.isAdmin ? 'ADMIN' : 'DANIŞMAN', style: const TextStyle(color: AppTheme.goldLight, fontWeight: FontWeight.bold, fontSize: 12)),
                   ],
                 ),
               ),

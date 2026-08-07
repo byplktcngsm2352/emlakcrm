@@ -4,6 +4,7 @@ import 'package:uuid/uuid.dart';
 import '../../models/customer.dart';
 import '../../models/customer_criteria.dart';
 import '../../models/property.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/crm_provider.dart';
 import '../../theme/app_theme.dart';
 
@@ -232,6 +233,9 @@ class _CustomerFormViewState extends State<CustomerFormView> {
         preferredRoomCount: _preferredRoomCount,
       );
 
+      final auth = Provider.of<AuthProvider>(context, listen: false);
+      final currentUser = auth.currentUser;
+
       final customer = Customer(
         id: widget.customer?.id ?? const Uuid().v4(),
         name: _name,
@@ -242,12 +246,16 @@ class _CustomerFormViewState extends State<CustomerFormView> {
         notes: _notes,
         createdAt: widget.customer?.createdAt ?? DateTime.now(),
         criteria: criteria,
+        agentId: widget.customer?.agentId ?? (currentUser?.id ?? 'admin-id'),
+        agentName: widget.customer?.agentName ?? (currentUser?.fullName ?? 'Admin Yönetici'),
       );
 
       if (widget.customer != null) {
         provider.updateCustomer(customer);
+        auth.logAction('Müşteri Kaydı Güncellendi', details: '${customer.name} (${customer.stageName})');
       } else {
         provider.addCustomer(customer);
+        auth.logAction('Yeni Müşteri Kaydedildi', details: '${customer.name} (${customer.typeName})');
       }
 
       Navigator.pop(context);

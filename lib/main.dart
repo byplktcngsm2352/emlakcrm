@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'providers/auth_provider.dart';
 import 'providers/crm_provider.dart';
 import 'theme/app_theme.dart';
 import 'views/main_navigation.dart';
@@ -16,6 +17,7 @@ class EmlakCrmApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => CrmProvider()),
       ],
       child: MaterialApp(
