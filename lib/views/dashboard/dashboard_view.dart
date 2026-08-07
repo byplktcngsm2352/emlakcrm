@@ -61,11 +61,20 @@ class DashboardView extends StatelessWidget {
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
+                    tooltip: 'Hatırlatmalar',
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) => const RemindersView()),
                       );
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.logout, color: AppTheme.errorRed),
+                    tooltip: 'Çıkış Yap',
+                    onPressed: () async {
+                      final auth = Provider.of<AuthProvider>(context, listen: false);
+                      await auth.logout();
                     },
                   ),
                   const SizedBox(width: 8),
@@ -193,20 +202,32 @@ class DashboardView extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppTheme.goldAccent.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppTheme.goldAccent),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.star, color: AppTheme.goldAccent, size: 14),
-                    const SizedBox(width: 4),
-                    Text(auth.isAdmin ? 'ADMIN' : 'DANIŞMAN', style: const TextStyle(color: AppTheme.goldLight, fontWeight: FontWeight.bold, fontSize: 12)),
-                  ],
-                ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    decoration: BoxDecoration(
+                      color: AppTheme.goldAccent.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(color: AppTheme.goldAccent),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.star, color: AppTheme.goldAccent, size: 14),
+                        const SizedBox(width: 4),
+                        Text(auth.isAdmin ? 'ADMIN' : 'DANIŞMAN', style: const TextStyle(color: AppTheme.goldLight, fontWeight: FontWeight.bold, fontSize: 12)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.power_settings_new, color: AppTheme.errorRed),
+                    tooltip: 'Çıkış Yap',
+                    onPressed: () async {
+                      await auth.logout();
+                    },
+                  ),
+                ],
               ),
             ],
           ),

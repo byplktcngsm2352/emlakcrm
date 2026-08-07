@@ -35,6 +35,16 @@ class _AdminDashboardViewState extends State<AdminDashboardView> with SingleTick
                 Text('Admin Yönetim Paneli', style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.logout, color: AppTheme.errorRed),
+                tooltip: 'Çıkış Yap',
+                onPressed: () async {
+                  await auth.logout();
+                },
+              ),
+              const SizedBox(width: 8),
+            ],
             bottom: TabBar(
               controller: _tabController,
               indicatorColor: AppTheme.emeraldAccent,
